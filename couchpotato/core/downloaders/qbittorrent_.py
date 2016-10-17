@@ -126,7 +126,7 @@ class qBittorrent(DownloaderBase):
             return []
 
         try:
-            torrents = self.qb.torrents(status='all', label=self.conf('label'))
+            torrents = self.qb.torrents(status='all', label=self.conf('label'), limit=None)
 
             release_downloads = ReleaseDownloadList(self)
 
