@@ -517,6 +517,13 @@ class Release(Plugin):
 
                 db.update(rel)
 
+                # Update media "last_edit" timestamp
+                m = db.get('id', rel['media_id'])
+
+                if m:
+                    m['last_edit'] = int(time.time())
+                    db.update(m)
+
                 #Update all movie info as there is no release update function
                 fireEvent('notify.frontend', type = 'release.update_status', data = rel)
 

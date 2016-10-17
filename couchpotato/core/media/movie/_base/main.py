@@ -129,6 +129,7 @@ class MovieBase(MovieTypeBase):
                     log.error('Failed getting previous profile: %s', traceback.format_exc())
             except:
                 new = True
+                media['last_edit'] = int(time.time())
                 m = db.insert(media)
 
             # Update dict to be usable
