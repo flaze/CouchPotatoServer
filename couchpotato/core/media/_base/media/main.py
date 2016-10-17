@@ -532,6 +532,7 @@ class MediaPlugin(MediaBase):
 
             # Only update when status has changed
             if previous_status != m['status'] and (not allowed_restatus or m['status'] in allowed_restatus):
+                m['last_edit'] = int(time.time())
                 db.update(m)
 
                 # Tag media as recent
