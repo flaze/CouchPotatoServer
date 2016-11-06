@@ -160,7 +160,12 @@ class MovieSearcher(SearcherBase, MovieTypeBase):
         profile = db.get('id', movie['profile_id'])
         ret = False
 
+        log.debug('Searching for %s in profile %r, qualities: %r', (default_title, profile['label'], profile.get('qualities', [])))
+
         for index, q_identifier in enumerate(profile.get('qualities', [])):
+            if not q_identifier:
+                continue
+
             quality_custom = {
                 'index': index,
                 'quality': q_identifier,
@@ -197,6 +202,11 @@ class MovieSearcher(SearcherBase, MovieTypeBase):
                 break
 
             quality = fireEvent('quality.single', identifier = q_identifier, single = True)
+
+            if not quality:
+                log.error('Unable to find quality %r, defined in profile: %r', (q_identifier, profile['label']))
+                continue
+
             log.info('Search for %s in %s%s', (default_title, quality['label'], ' ignoring ETA' if always_search or ignore_eta else ''))
 
             # Extend quality with profile customs
@@ -395,7 +405,7 @@ class MovieSearcher(SearcherBase, MovieTypeBase):
                 self.single(media, manual = manual, force_download = force_download)
 
                 return True
-            
+
             return False
         except:
             log.error('Failed searching for next release: %s', traceback.format_exc())
