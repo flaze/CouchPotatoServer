@@ -16,7 +16,7 @@ class Base(TorrentProvider):
     urls = {
         'test': 'https://iptorrents.eu/',
         'base_url': 'https://iptorrents.eu',
-        'login': 'https://iptorrents.eu/',
+        'login': 'https://iptorrents.eu/take_login.php',
         'login_check': 'https://iptorrents.eu/oldinbox.php',
         'search': 'https://iptorrents.eu/t?%s%%s&q=%s&qf=#torrents&p=%%d',
     }
@@ -103,8 +103,7 @@ class Base(TorrentProvider):
     def getLoginParams(self):
         return {
             'username': self.conf('username'),
-            'password': self.conf('password'),
-            'login': 'submit',
+            'password': self.conf('password')
         }
 
     def loginSuccess(self, output):
